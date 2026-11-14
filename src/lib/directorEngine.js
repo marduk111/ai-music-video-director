@@ -8,7 +8,7 @@ import {
   DIRECTOR_ENGINE_PROPS,
 } from './constants.js'
 import {
-  averageEnergy, parseLyrics, distributeLyrics, formatMMSS,
+  averageEnergy, parseLyrics, distributeLyrics,
   beatSyncedBoundaries, barSeconds, framesForDuration,
 } from './audioAnalysis.js'
 
@@ -64,6 +64,66 @@ function pacingPhrase(bpm) {
   return 'slow lingering pacing'
 }
 
+// ---------- Lyric-driven imagery (the AI-Studio-era magic, local) ----------
+// Instead of pasting lyrics under a generic template, each scene's lines are
+// read for concrete imagery and the scene text is *written from* them.
+const IMAGERY_CLAUSES = [
+  { re: /\b(storm|thunder|lightning)\b/i, clause: 'as a thunderstorm breaks overhead, lightning silhouetting the skyline' },
+  { re: /\b(rain|downpour|drizzle|umbrella)\b/i, clause: 'in driving rain, droplets catching the light, wet surfaces mirroring the scene' },
+  { re: /\b(river|water|ocean|sea|tide|wave|shore|drown)\b/i, clause: 'beside wide slow water, reflections rippling and breaking apart' },
+  { re: /\b(fire|burn|burning|smoke|ember|ash|flame)\b/i, clause: 'with embers and drifting smoke in the air, warm firelight against cold shadows' },
+  { re: /\b(night|midnight|darkness|moon|star|stars)\b/i, clause: 'deep at night under a thin moon, halos of mist around every light' },
+  { re: /\b(morning|dawn|sunrise|sunlight|daybreak)\b/i, clause: 'at first light, low golden sun flaring long across the frame' },
+  { re: /\b(sing|song|sing me down|voice|melody|chorus)\b/i, clause: 'caught mid-song, head tilted back as if carrying a melody out over the dark' },
+  { re: /\b(dance|dancing|spin|spinning)\b/i, clause: 'moving through a half-lit dance, fabric and shadow trailing the turn' },
+  { re: /\b(city|street|streets|neon|town|sidewalk|alley)\b/i, clause: 'on a rain-washed city street, neon smear reflected in the pavement' },
+  { re: /\b(road|highway|driving|car|train|leaving|leave|gone)\b/i, clause: 'along an empty road at speed, the world smearing past the window' },
+  { re: /\b(born|grow|grew|child|children|young|age|old|years)\b/i, clause: 'time folded into one continuous shot — the years visible in the changing light' },
+  { re: /\b(scar|wound|bruise|broken|break|bleed)\b/i, clause: 'close enough to read every scar, each one catching its own rim light' },
+  { re: /\b(name|names|remember|forget|ghost|haunt)\b/i, clause: 'surrounded by half-glimpsed reflections, as if remembered faces linger at the frame edge' },
+  { re: /\b(mirror|reflection|glass|window)\b/i, clause: 'framed through reflective glass, the reflection a half-beat out of sync with the body' },
+]
+
+const NOUN_STOP = new Set(('the a an and or but of in on at to for with is are was were i you he she it we they me my ' +
+  'your our this that these those be been am as by not no so do did dont cant will would could should ' +
+  'oh yeah na la o hey come go going get got gotta gonna every all some any just still even ever never ' +
+  'down up out off again more than then when what who how why where born grew sing sang again before after').split(' '))
+
+/**
+ * Read a scene's lyric lines and return an imagery clause for the prompt, or
+ * null if the lines are too abstract to visualize. Table matches first; falls
+ * back to the two strongest concrete nouns.
+ */
+function imageryForLines(lines) {
+  if (!lines?.length) return null
+  const joined = lines.join(' ').toLowerCase()
+  const hits = IMAGERY_CLAUSES.filter((c) => c.re.test(joined)).slice(0, 2)
+  if (hits.length) return hits.map((h) => h.clause).join(', ')
+  const nouns = joined
+    .replace(/[^a-z\s']/g, '')
+    .split(/\s+/)
+    .filter((w) => w.length > 3 && !NOUN_STOP.has(w))
+  const seen = new Set()
+  const picked = []
+  for (const w of nouns) {
+    if (!seen.has(w)) { seen.add(w); picked.push(w) }
+    if (picked.length >= 2) break
+  }
+  return picked.length ? `evoking ${picked.join(' and ')}` : null
+}
+
+function energyWord(intensity) {
+  if (intensity > 0.62) return 'builds toward a peak'
+  if (intensity > 0.34) return 'simmers and swells'
+  return 'breathes, quiet and slow'
+}
+
+// a/an helper for angle names in prose
+function an(word) {
+  return (/^[aeiou]/i.test(word) ? 'an' : 'a')
+}
+
+
 function dynamicsDescription(buckets) {
   if (!buckets?.length) return 'Steady energy throughout.'
   const first = buckets.slice(0, Math.floor(buckets.length * 0.2))
@@ -80,16 +140,15 @@ function dynamicsDescription(buckets) {
 
 function extractThemes(parsedLyrics) {
   if (!parsedLyrics.length) return ['journey', 'longing', 'transformation']
-  const stop = new Set('the a an and or but of in on at to for with is are was were i you he she it we they me my your our this that be been am as by not no so do did dont cant will would could should oh yeah na la'.split(' '))
   const freq = {}
   for (const l of parsedLyrics) {
     for (const w of l.text.toLowerCase().replace(/[^a-z\s']/g, '').split(/\s+/)) {
-      if (w.length > 2 && !stop.has(w)) freq[w] = (freq[w] || 0) + 1
+      if (w.length > 3 && !NOUN_STOP.has(w)) freq[w] = (freq[w] || 0) + 1
     }
   }
   const themes = Object.entries(freq)
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
+    .slice(0, 3)
     .map(([w]) => w)
   return themes.length ? themes : ['journey', 'longing', 'transformation']
 }
@@ -168,19 +227,17 @@ export function generateScriptWithEngine({
     const prevAngle = i > 0 ? scenes[i - 1].cameraAngle : null
     const cameraAngle = pickCameraAngle(intensity, prevAngle, seedBase + i)
     const transition = i === 0 ? null : TRANSITIONS[(i - 1) % TRANSITIONS.length]
-    const sectionLabel =
-      i === 0 ? 'opening' : i === spans.length - 1 ? 'finale' : `section ${formatMMSS(start)}`
-    const description = `Scene ${i + 1}: The camera moves with a ${cameraAngle.toLowerCase()} capturing the emotional progression during ${sectionLabel}.`
     const aesthetic = STYLE_AESTHETICS[style] || STYLE_AESTHETICS.Cinematic
     const pacing = pacingPhrase(audio?.bpm)
-    const veoPrompt = `${cameraAngle} of ${character.name} ${actionVerb(intensity)} ${props.map((p) => p.name).join(' and ')} in a cinematic environment${themeNote}, ${aesthetic}${pacing ? `, ${pacing}` : ''}.`
+    // base prompt; the lyric pass below rewrites these with real imagery
+    const veoPrompt = `${cameraAngle} of ${character.name} ${actionVerb(intensity)} ${props.map((p) => p.name).join(' and ')} in a cinematic environment, ${aesthetic}${pacing ? `, ${pacing}` : ''}.`
     scenes.push({
       sceneNumber: i + 1,
       startTimeSeconds: Math.round(start * 100) / 100,
       endTimeSeconds: Math.round(end * 100) / 100,
       transition,
       cameraAngle,
-      description,
+      description: '',
       veoPrompt,
       correspondingLyrics: [],
       // mesh render metadata: exact LTXV frame count for this shot
@@ -203,6 +260,38 @@ export function generateScriptWithEngine({
       ]
     }
   })
+
+  // ---------- lyric pass: scene text written FROM the lyrics ----------
+  const hasAnyLyrics = parsedLyrics.length > 0
+  for (let i = 0; i < scenes.length; i++) {
+    const sc = scenes[i]
+    const aesthetic = STYLE_AESTHETICS[style] || STYLE_AESTHETICS.Cinematic
+    const pacing = pacingPhrase(audio?.bpm)
+    const angle = sc.cameraAngle.toLowerCase()
+    const sungLines = sc.correspondingLyrics
+      .map((l) => l.text)
+      .filter((t) => t && t !== 'Instrumental flow')
+    const imagery = imageryForLines(sungLines)
+    const base = `${sc.cameraAngle} of ${character.name} ${actionVerb(sc._intensity)} ${props.map((p) => p.name).join(' and ')}`
+
+    if (imagery) {
+      // the lyric paints the shot
+      sc.veoPrompt = `${base}, ${imagery}, ${aesthetic}${pacing ? `, ${pacing}` : ''}.`
+      const firstLine = sungLines[0]
+      sc.description = firstLine
+        ? `Scene ${sc.sceneNumber}: The line "${firstLine.length > 64 ? firstLine.slice(0, 61) + '…' : firstLine}" drives ${an(angle)} ${angle} — ${imagery}.`
+        : `Scene ${sc.sceneNumber}: ${an(angle)} ${angle} — ${imagery}.`
+    } else if (hasAnyLyrics) {
+      // instrumental gap inside a lyrical song: hold the motif, let it breathe
+      const motif = themes.filter((t) => t.length > 3).slice(0, 2).join(' and ')
+      sc.veoPrompt = `${base} in a cinematic environment${motif ? `, echoing the song's ${motif}` : ''}, ${aesthetic}${pacing ? `, ${pacing}` : ''}.`
+      sc.description = `Scene ${sc.sceneNumber}: Instrumental passage — ${an(angle)} ${angle} that ${energyWord(sc._intensity)} while the arrangement carries the story.`
+    } else {
+      // no lyrics at all: neutral treatment
+      sc.veoPrompt = `${base} in a cinematic environment, ${aesthetic}${pacing ? `, ${pacing}` : ''}.`
+      sc.description = `Scene ${sc.sceneNumber}: ${an(angle)} ${angle} that ${energyWord(sc._intensity)}.`
+    }
+  }
 
   const profile = spectralProfile(audio)
   const bpm = audio?.bpm || 80 + (seedBase % 60)
