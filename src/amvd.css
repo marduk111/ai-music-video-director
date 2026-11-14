@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root {
+  --bg: #0B0B0D;
+  --panel: #16151A;
+  --panel-raised: #1E1D24;
+  --hairline: #302E37;
+  --text: #EDEAE2;
+  --text-dim: #9C99A6;
+  --gold: #E3B341;
+  --teal: #5FD6C4;
+  --red-tally: #E1503F;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Space Grotesk', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); }
+.amvd-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+.amvd-scroll::-webkit-scrollbar-track { background: var(--panel); }
+.amvd-scroll::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+.sprocket-row {
+  height: 10px;
+  background-color: var(--panel-raised);
+  background-image: radial-gradient(circle, var(--bg) 34%, transparent 35%);
+  background-size: 16px 16px;
+  background-position: 4px center;
+}
+@keyframes amvd-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@keyframes amvd-fadein { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+.amvd-fadein { animation: amvd-fadein 0.35s ease-out; }
+.amvd-frame { transition: transform 0.15s ease, border-color 0.15s ease; }
+.amvd-frame:hover { transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) {
+  .amvd-fadein, .amvd-frame, * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+.amvd-textarea::placeholder { color: var(--text-dim); }

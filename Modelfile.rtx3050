@@ -1,0 +1,22 @@
+# Example Modelfile tuned for RTX 3050 6GB
+# Usage:
+#   1. ollama pull llama3.2:3b
+#   2. ollama create amvd-3b -f Modelfile.rtx3050
+#   3. Set OLLAMA_MODEL=amvd-3b in .env
+
+FROM llama3.2:3b
+
+# Context — 4096 is the sweet spot for 6GB with 3B models
+PARAMETER num_ctx 4096
+
+# Generation length — enough for a scene batch JSON
+PARAMETER num_predict 2048
+
+# Slightly lower temp for more reliable structured JSON
+PARAMETER temperature 0.65
+PARAMETER top_p 0.9
+PARAMETER repeat_penalty 1.1
+
+# Let Ollama put all layers on GPU (3B fits easily)
+# For 8B models that barely fit, try: PARAMETER num_gpu 28
+# PARAMETER num_gpu 99
