@@ -4,8 +4,13 @@ import {
   CAMERA_ANGLES,
   TRANSITIONS,
   MARKER_COLORS,
+  DIRECTOR_ENGINE_CHARACTERS,
+  DIRECTOR_ENGINE_PROPS,
 } from './constants.js'
-import { averageEnergy, parseLyrics, distributeLyrics, formatMMSS } from './audioAnalysis.js'
+import {
+  averageEnergy, parseLyrics, distributeLyrics, formatMMSS,
+  beatSyncedBoundaries, barSeconds, framesForDuration,
+} from './audioAnalysis.js'
 
 const KEY_POOL = ['A Minor', 'C Minor', 'D Minor', 'E Minor', 'F Minor', 'G Minor', 'F Major', 'C Major', 'G Major', 'D Major']
 const INSTRUMENTATION_BY_PROFILE = {
@@ -130,35 +135,57 @@ export function generateScriptWithEngine({
   lyricsText = '',
   audio = null,
   songTitle = '',
+  timing = 'beats', // 'beats' = bar-aligned adaptive (mesh plan) | 'fixed8' = VEO blocks
 }) {
   const total = Math.max(8, Math.round(durationSeconds))
-  const sceneCount = Math.ceil(total / 8)
   const parsedLyrics = parseLyrics(lyricsText)
   const seedBase = hashString(`${songTitle}|${style}|${total}|${audio?.fileName || ''}`)
+  // Per-song cast: rotate through the archetype pools by seed so different
+  // songs get different consistent elements. Themes flavor the descriptions.
+  const themes = extractThemes(parsedLyrics)
+  const character = DIRECTOR_ENGINE_CHARACTERS[seedBase % DIRECTOR_ENGINE_CHARACTERS.length]
+  const propA = DIRECTOR_ENGINE_PROPS[(seedBase >> 3) % DIRECTOR_ENGINE_PROPS.length]
+  const propB = DIRECTOR_ENGINE_PROPS[(seedBase >> 6) % DIRECTOR_ENGINE_PROPS.length]
+  const props = [propA]
+  if (propB.name !== propA.name && total >= 48) props.push(propB)
+  const themeNote = themes[0] ? ` carrying the song's ${themes.slice(0, 2).join(' and ')} arc` : ''
+
+  // Scene timing: beat-synced bars when audio analysis is available (cuts land
+  // on musical bars, length breathes with energy); fixed 8s blocks otherwise.
+  let spans
+  if (timing === 'beats' && audio?.bpm) {
+    spans = beatSyncedBoundaries(audio, total)
+  } else {
+    spans = []
+    for (let s = 0; s < total; s += 8) {
+      spans.push({ start: s, end: Math.min(total, s + 8), intensity: averageEnergy(audio, s, s + 8) })
+    }
+  }
 
   const scenes = []
-  for (let i = 0; i < sceneCount; i++) {
-    const start = i * 8
-    const end = i === sceneCount - 1 ? total : start + 8
-    const intensity = averageEnergy(audio, start, end)
+  for (let i = 0; i < spans.length; i++) {
+    const { start, end, intensity } = spans[i]
     const prevAngle = i > 0 ? scenes[i - 1].cameraAngle : null
     const cameraAngle = pickCameraAngle(intensity, prevAngle, seedBase + i)
     const transition = i === 0 ? null : TRANSITIONS[(i - 1) % TRANSITIONS.length]
     const sectionLabel =
-      i === 0 ? 'opening' : i === sceneCount - 1 ? 'finale' : `section ${formatMMSS(start)}`
+      i === 0 ? 'opening' : i === spans.length - 1 ? 'finale' : `section ${formatMMSS(start)}`
     const description = `Scene ${i + 1}: The camera moves with a ${cameraAngle.toLowerCase()} capturing the emotional progression during ${sectionLabel}.`
     const aesthetic = STYLE_AESTHETICS[style] || STYLE_AESTHETICS.Cinematic
     const pacing = pacingPhrase(audio?.bpm)
-    const veoPrompt = `${cameraAngle} of The Protagonist ${actionVerb(intensity)} The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed${pacing ? `, ${pacing}` : ''}, ${aesthetic}.`
+    const veoPrompt = `${cameraAngle} of ${character.name} ${actionVerb(intensity)} ${props.map((p) => p.name).join(' and ')} in a cinematic environment${themeNote}, ${aesthetic}${pacing ? `, ${pacing}` : ''}.`
     scenes.push({
       sceneNumber: i + 1,
-      startTimeSeconds: start,
-      endTimeSeconds: end,
+      startTimeSeconds: Math.round(start * 100) / 100,
+      endTimeSeconds: Math.round(end * 100) / 100,
       transition,
       cameraAngle,
       description,
       veoPrompt,
       correspondingLyrics: [],
+      // mesh render metadata: exact LTXV frame count for this shot
+      frames: framesForDuration(end - start),
+      bars: spans[i].bars ?? null,
       _intensity: intensity,
     })
   }
@@ -191,18 +218,17 @@ export function generateScriptWithEngine({
       musicalKey: KEY_POOL[seedBase % KEY_POOL.length],
       instrumentation: INSTRUMENTATION_BY_PROFILE[profile],
       dynamics: dynamicsDescription(audio?.energyBuckets),
-      lyricalThemes: extractThemes(parsedLyrics),
+      lyricalThemes: themes,
       suggestedColorPalette: paletteForStyle(style),
     },
     consistentElements: {
-      characters: [
-        { name: 'The Protagonist', description: 'A compelling central figure whose journey anchors the narrative' },
-      ],
-      props: [
-        { name: 'The Mysterious Relic', description: 'An enigmatic object of significance that recurs throughout the video' },
-      ],
+      characters: [{ ...character, description: `${character.description}${themeNote}` }],
+      props: props.map((p) => ({ ...p })),
     },
     scenes,
     generatedBy: 'director-engine',
+    timing: timing === 'beats' && audio?.bpm ? 'beats' : 'fixed8',
+    bpm,
+    barSeconds: barSeconds(audio?.bpm),
   }
 }

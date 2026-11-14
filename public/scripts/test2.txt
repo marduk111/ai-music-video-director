@@ -1,0 +1,54 @@
+Title: ELIZA-AGAIN
+Mood: Cinematic
+
+----------------------------------------
+SONG ANALYSIS
+----------------------------------------
+
+Tempo: 110 BPM
+Key: D Minor
+
+----------------------------------------
+CONSISTENT ELEMENTS
+----------------------------------------
+
+Characters:
+- The Protagonist: A enigmatic figure wearing a dark tailored coat with expressive eyes.
+
+Props:
+- The Mysterious Relic: A glowing luminescent artifact reflecting surrounding light.
+
+========================================
+VIDEO SCRIPT
+========================================
+
+SCENE 1
+Time: 00:00 - 00:08
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 1: The camera moves with a low angle tracking shot capturing the emotional progression during section 00:00.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, hyper-detailed.
+
+---
+
+SCENE 2
+Time: 00:08 - 00:16
+Transition: Dissolve to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 2: The camera moves with a eye-level close-up capturing the emotional progression during section 00:08.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, hyper-detailed.
+
+---

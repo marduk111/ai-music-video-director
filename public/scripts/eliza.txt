@@ -1,0 +1,991 @@
+Title: ELIZA-AGAIN
+Mood: Cinematic
+
+----------------------------------------
+SONG ANALYSIS
+----------------------------------------
+
+Tempo: 110 BPM
+Key: D Minor
+Dynamics: Building tension with orchestral swells leading to a climax.
+Instrumentation: Synthesizers, Dynamic Drums, Electric Bass, Atmospheric Pads
+Lyrical Themes: Destiny, Internal Struggle, Reflection, Hope
+
+Suggested Color Palette:
+- #1E293B: Deep cinematic shadows
+- #F59E0B: Warm golden key light
+- #06B6D4: Cool teal backlight
+
+----------------------------------------
+CONSISTENT ELEMENTS
+----------------------------------------
+
+Characters:
+- The Protagonist: A enigmatic figure wearing a dark tailored coat with expressive eyes.
+
+Props:
+- The Mysterious Relic: A glowing luminescent artifact reflecting surrounding light.
+
+========================================
+VIDEO SCRIPT
+========================================
+
+SCENE 1
+Time: 00:00 - 00:08
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 1: The camera moves with a low angle tracking shot capturing the emotional progression during section 00:00.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 2
+Time: 00:08 - 00:16
+Transition: Cut to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 2: The camera moves with a high angle overhead view capturing the emotional progression during section 00:08.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 3
+Time: 00:16 - 00:24
+Transition: Dissolve to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 3: The camera moves with a eye-level close-up capturing the emotional progression during section 00:16.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 4
+Time: 00:24 - 00:32
+Transition: Fade in:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 4: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 00:24.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 5
+Time: 00:32 - 00:40
+Transition: Match cut to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 5: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 00:32.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 6
+Time: 00:40 - 00:48
+Transition: Flash to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 6: The camera moves with a slow dolly push-in capturing the emotional progression during section 00:40.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 7
+Time: 00:48 - 00:56
+Transition: Whip pan to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 7: The camera moves with a dutch angle perspective capturing the emotional progression during section 00:48.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 8
+Time: 00:56 - 01:04
+Transition: Cut to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 8: The camera moves with a low angle tracking shot capturing the emotional progression during section 00:56.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 9
+Time: 01:04 - 01:12
+Transition: Dissolve to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 9: The camera moves with a high angle overhead view capturing the emotional progression during section 01:04.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 10
+Time: 01:12 - 01:20
+Transition: Fade in:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 10: The camera moves with a eye-level close-up capturing the emotional progression during section 01:12.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 11
+Time: 01:20 - 01:28
+Transition: Match cut to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 11: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 01:20.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 12
+Time: 01:28 - 01:36
+Transition: Flash to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 12: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 01:28.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 13
+Time: 01:36 - 01:44
+Transition: Whip pan to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 13: The camera moves with a slow dolly push-in capturing the emotional progression during section 01:36.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 14
+Time: 01:44 - 01:52
+Transition: Cut to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 14: The camera moves with a dutch angle perspective capturing the emotional progression during section 01:44.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 15
+Time: 01:52 - 02:00
+Transition: Dissolve to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 15: The camera moves with a low angle tracking shot capturing the emotional progression during section 01:52.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 16
+Time: 02:00 - 02:08
+Transition: Fade in:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 16: The camera moves with a high angle overhead view capturing the emotional progression during section 02:00.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 17
+Time: 02:08 - 02:16
+Transition: Match cut to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 17: The camera moves with a eye-level close-up capturing the emotional progression during section 02:08.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 18
+Time: 02:16 - 02:24
+Transition: Flash to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 18: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 02:16.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 19
+Time: 02:24 - 02:32
+Transition: Whip pan to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 19: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 02:24.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 20
+Time: 02:32 - 02:40
+Transition: Cut to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 20: The camera moves with a slow dolly push-in capturing the emotional progression during section 02:32.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 21
+Time: 02:40 - 02:48
+Transition: Dissolve to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 21: The camera moves with a dutch angle perspective capturing the emotional progression during section 02:40.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 22
+Time: 02:48 - 02:56
+Transition: Fade in:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 22: The camera moves with a low angle tracking shot capturing the emotional progression during section 02:48.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 23
+Time: 02:56 - 03:04
+Transition: Match cut to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 23: The camera moves with a high angle overhead view capturing the emotional progression during section 02:56.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 24
+Time: 03:04 - 03:12
+Transition: Flash to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 24: The camera moves with a eye-level close-up capturing the emotional progression during section 03:04.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 25
+Time: 03:12 - 03:20
+Transition: Whip pan to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 25: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 03:12.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 26
+Time: 03:20 - 03:28
+Transition: Cut to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 26: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 03:20.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 27
+Time: 03:28 - 03:36
+Transition: Dissolve to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 27: The camera moves with a slow dolly push-in capturing the emotional progression during section 03:28.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 28
+Time: 03:36 - 03:44
+Transition: Fade in:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 28: The camera moves with a dutch angle perspective capturing the emotional progression during section 03:36.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 29
+Time: 03:44 - 03:52
+Transition: Match cut to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 29: The camera moves with a low angle tracking shot capturing the emotional progression during section 03:44.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 30
+Time: 03:52 - 04:00
+Transition: Flash to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 30: The camera moves with a high angle overhead view capturing the emotional progression during section 03:52.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 31
+Time: 04:00 - 04:08
+Transition: Whip pan to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 31: The camera moves with a eye-level close-up capturing the emotional progression during section 04:00.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 32
+Time: 04:08 - 04:16
+Transition: Cut to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 32: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 04:08.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 33
+Time: 04:16 - 04:24
+Transition: Dissolve to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 33: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 04:16.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 34
+Time: 04:24 - 04:32
+Transition: Fade in:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 34: The camera moves with a slow dolly push-in capturing the emotional progression during section 04:24.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 35
+Time: 04:32 - 04:40
+Transition: Match cut to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 35: The camera moves with a dutch angle perspective capturing the emotional progression during section 04:32.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 36
+Time: 04:40 - 04:48
+Transition: Flash to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 36: The camera moves with a low angle tracking shot capturing the emotional progression during section 04:40.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 37
+Time: 04:48 - 04:56
+Transition: Whip pan to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 37: The camera moves with a high angle overhead view capturing the emotional progression during section 04:48.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 38
+Time: 04:56 - 05:04
+Transition: Cut to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 38: The camera moves with a eye-level close-up capturing the emotional progression during section 04:56.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 39
+Time: 05:04 - 05:12
+Transition: Dissolve to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 39: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 05:04.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 40
+Time: 05:12 - 05:20
+Transition: Fade in:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 40: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 05:12.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 41
+Time: 05:20 - 05:28
+Transition: Match cut to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 41: The camera moves with a slow dolly push-in capturing the emotional progression during section 05:20.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 42
+Time: 05:28 - 05:36
+Transition: Flash to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 42: The camera moves with a dutch angle perspective capturing the emotional progression during section 05:28.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 43
+Time: 05:36 - 05:44
+Transition: Whip pan to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 43: The camera moves with a low angle tracking shot capturing the emotional progression during section 05:36.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 44
+Time: 05:44 - 05:52
+Transition: Cut to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 44: The camera moves with a high angle overhead view capturing the emotional progression during section 05:44.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 45
+Time: 05:52 - 06:00
+Transition: Dissolve to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 45: The camera moves with a eye-level close-up capturing the emotional progression during section 05:52.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 46
+Time: 06:00 - 06:08
+Transition: Fade in:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 46: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 06:00.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 47
+Time: 06:08 - 06:16
+Transition: Match cut to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 47: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 06:08.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 48
+Time: 06:16 - 06:24
+Transition: Flash to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 48: The camera moves with a slow dolly push-in capturing the emotional progression during section 06:16.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 49
+Time: 06:24 - 06:32
+Transition: Whip pan to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 49: The camera moves with a dutch angle perspective capturing the emotional progression during section 06:24.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 50
+Time: 06:32 - 06:40
+Transition: Cut to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 50: The camera moves with a low angle tracking shot capturing the emotional progression during section 06:32.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 51
+Time: 06:40 - 06:48
+Transition: Dissolve to:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 51: The camera moves with a high angle overhead view capturing the emotional progression during section 06:40.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 52
+Time: 06:48 - 06:56
+Transition: Fade in:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 52: The camera moves with a eye-level close-up capturing the emotional progression during section 06:48.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 53
+Time: 06:56 - 07:04
+Transition: Match cut to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 53: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 06:56.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 54
+Time: 07:04 - 07:12
+Transition: Flash to:
+Camera Angle: Dynamic whip-pan shot
+
+Description:
+Scene 54: The camera moves with a dynamic whip-pan shot capturing the emotional progression during section 07:04.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dynamic whip-pan shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 55
+Time: 07:12 - 07:20
+Transition: Whip pan to:
+Camera Angle: Slow dolly push-in
+
+Description:
+Scene 55: The camera moves with a slow dolly push-in capturing the emotional progression during section 07:12.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Slow dolly push-in of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 56
+Time: 07:20 - 07:28
+Transition: Cut to:
+Camera Angle: Dutch angle perspective
+
+Description:
+Scene 56: The camera moves with a dutch angle perspective capturing the emotional progression during section 07:20.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Dutch angle perspective of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 57
+Time: 07:28 - 07:36
+Transition: Dissolve to:
+Camera Angle: Low angle tracking shot
+
+Description:
+Scene 57: The camera moves with a low angle tracking shot capturing the emotional progression during section 07:28.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Low angle tracking shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 58
+Time: 07:36 - 07:44
+Transition: Fade in:
+Camera Angle: High angle overhead view
+
+Description:
+Scene 58: The camera moves with a high angle overhead view capturing the emotional progression during section 07:36.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+High angle overhead view of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 59
+Time: 07:44 - 07:52
+Transition: Match cut to:
+Camera Angle: Eye-level close-up
+
+Description:
+Scene 59: The camera moves with a eye-level close-up capturing the emotional progression during section 07:44.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Eye-level close-up of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+
+SCENE 60
+Time: 07:52 - 07:59
+Transition: Flash to:
+Camera Angle: Wide cinematic landscape shot
+
+Description:
+Scene 60: The camera moves with a wide cinematic landscape shot capturing the emotional progression during section 07:52.
+
+Lyrics:
+Instrumental flow
+
+VEO Prompt:
+Wide cinematic landscape shot of The Protagonist holding The Mysterious Relic in a cinematic environment, Deep cinematic shadows, 35mm film lens, cinematic lighting, 8k render, hyper-detailed.
+
+---
+

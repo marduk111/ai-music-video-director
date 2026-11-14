@@ -51,11 +51,29 @@ export const MARKER_COLORS = [
 ]
 
 export const DIRECTOR_ENGINE_CHARACTERS = [
-  { name: 'The Protagonist', description: 'A compelling central figure whose journey anchors the narrative' },
+  { name: 'The Wanderer', description: 'A hooded drifter with weather-worn boots and a face half-lost in shadow' },
+  { name: 'The Night Courier', description: 'A lean figure in a black courier jacket weaving through rain-slicked streets' },
+  { name: 'The Neon Saint', description: 'A luminous presence in a translucent coat, haloed by neon signage' },
+  { name: 'The Last Sovereign', description: 'A crowned figure in a tattered ceremonial cloak, regal and alone' },
+  { name: 'The Aviatrix', description: 'A daring pilot with leather cap, goggles and wind-touched hair' },
+  { name: 'The Tide Keeper', description: 'A solitary wader in a salt-stiffened coat, hair braided with sea-glass' },
+  { name: 'The Copper Gunslinger', description: 'A taciturn stranger in a dust-colored duster, revolver low at the hip' },
+  { name: 'The Ember Dancer', description: 'A sinuous dancer trailing ribbons of sparks with every movement' },
+  { name: 'The Cartographer', description: 'A bespectacled soul wrapped in maps, ink-stained fingers and a compass gaze' },
+  { name: 'The Glass Automaton', description: 'A translucent clockwork figure whose ticking heart shows through the glass' },
 ]
 
 export const DIRECTOR_ENGINE_PROPS = [
-  { name: 'The Mysterious Relic', description: 'An enigmatic object of significance that recurs throughout the video' },
+  { name: 'A cracked brass compass', description: 'An ancient compass whose needle spins toward lost things, glowing faintly' },
+  { name: 'A luminous umbrella', description: 'A translucent umbrella that gathers city light like a lantern' },
+  { name: 'A mechanical songbird', description: 'A clockwork bird with brass feathers that sings on the hour' },
+  { name: 'A satchel of unsent letters', description: 'A worn leather satchel straining with decades of unposted letters' },
+  { name: 'A paper crane lantern', description: 'A folded paper crane holding a candle, casting wing-shaped shadows' },
+  { name: 'A vinyl record of unknown songs', description: 'A record whose label faded before anyone could name its songs' },
+  { name: 'An antique vanity mirror', description: 'A silvered mirror that keeps the reflection a half-second too long' },
+  { name: 'A vintage motorcycle', description: 'A polished café racer that hums like a struck bell at idle' },
+  { name: 'A jar of captured lightning', description: 'A sealed glass jar where a storm still flickers, restless' },
+  { name: 'A dried sunflower kept in a book', description: 'A pressed sunflower holding its color against all the years' },
 ]
 
 export const PROMPT_LIBRARY_PRESETS = [

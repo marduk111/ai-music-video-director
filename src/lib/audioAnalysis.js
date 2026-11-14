@@ -164,6 +164,52 @@ export function averageEnergy(audio, startSec, endSec) {
   return sum / (e - s)
 }
 
+// ---------- Beat-synced scene timing (the mesh/LTXV plan) ----------
+// LTXV generates any 8n+1 frame count at 25fps, so instead of VEO's fixed
+// 8-second blocks, scene boundaries land on musical bars and each shot's
+// length breathes with the song's energy: 2 bars on peaks, 8 in calm.
+export function barSeconds(bpm) {
+  if (!bpm || bpm < 40) return 2 // fallback: 120 BPM bar
+  return (60 / bpm) * 4
+}
+
+export function framesForDuration(seconds) {
+  // snap to the nearest valid LTXV length (8n+1 frames @ 25fps), min 1 bar-ish
+  const n = Math.max(1, Math.round((seconds * 25 - 1) / 8))
+  return 8 * n + 1
+}
+
+/**
+ * Walk the song and cut scenes on bar lines with energy-adaptive lengths.
+ * @returns {Array<{start, end, bars, intensity}>} boundaries aligned to bars;
+ *          the final scene absorbs any tail shorter than its own bar budget.
+ */
+export function beatSyncedBoundaries(audio, totalSeconds, { minBars = 2, maxBars = 8 } = {}) {
+  const bar = barSeconds(audio?.bpm)
+  const out = []
+  let start = 0
+  while (start < totalSeconds - 0.01) {
+    const remaining = totalSeconds - start
+    const intensity = averageEnergy(audio, start, Math.min(start + bar * minBars, totalSeconds))
+    let bars = intensity > 0.62 ? minBars : intensity > 0.34 ? Math.round((minBars + maxBars) / 2) : maxBars
+    // tail: if what's left fits inside one scene's budget, absorb it
+    if (remaining <= bars * bar * 1.05) {
+      out.push({ start, end: totalSeconds, bars: Math.max(1, Math.round(remaining / bar)), intensity })
+      break
+    }
+    // don't leave a sliver scene behind: if the next scene would be shorter
+    // than a minimum cut, stretch this one to swallow the rest
+    if (remaining - bars * bar < minBars * bar) {
+      out.push({ start, end: totalSeconds, bars: Math.max(1, Math.round(remaining / bar)), intensity })
+      break
+    }
+    out.push({ start, end: start + bars * bar, bars, intensity })
+    start += bars * bar
+  }
+  if (!out.length) out.push({ start: 0, end: totalSeconds, bars: maxBars, intensity: 0.5 })
+  return out
+}
+
 // ---------- Lyrics ----------
 
 export function parseLyrics(text) {
