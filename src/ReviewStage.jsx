@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react'
-import { FileDown, FileUp, ArrowLeft, Video, Loader2, RefreshCw } from 'lucide-react'
+import { FileDown, FileUp, ArrowLeft, Video, Loader2, RefreshCw, Copy, Trash2, Workflow } from 'lucide-react'
 import { serializeScriptText } from './lib/scriptIO.js'
+import { meshPromptForScene } from './lib/scriptIO.js'
+import * as mesh from './lib/mesh.js'
 import { reshootScene } from './lib/directorEngine.js'
 import { CAMERA_ANGLES, TRANSITIONS } from './lib/constants.js'
 
@@ -11,6 +13,56 @@ export default function ReviewStage({
   const [selRaw, setSel] = useState(0)
   const sel = Math.min(selRaw, Math.max(0, script.scenes.length - 1))
   const exportRef = useRef(null)
+  const dragIdx = useRef(null)
+
+  // ---- scene list surgery: reorder / duplicate / delete ----
+  const renumber = (scenes) => scenes.map((sc, k) => ({ ...sc, sceneNumber: k + 1 }))
+  const onDragStartScene = (i) => (e) => {
+    dragIdx.current = i
+    e.dataTransfer.effectAllowed = 'move'
+  }
+  const onDropScene = (i) => () => {
+    const from = dragIdx.current
+    dragIdx.current = null
+    if (from == null || from === i) return
+    setScript((s) => {
+      const scenes = [...s.scenes]
+      const [moved] = scenes.splice(from, 1)
+      scenes.splice(i, 0, moved)
+      return { ...s, scenes: renumber(scenes) }
+    })
+    setSel(i)
+  }
+  const duplicateScene = (i) =>
+    setScript((s) => {
+      const scenes = [...s.scenes]
+      scenes.splice(i + 1, 0, { ...scenes[i] })
+      return { ...s, scenes: renumber(scenes) }
+    })
+  const deleteScene = (i) =>
+    setScript((s) => (s.scenes.length <= 1 ? s : { ...s, scenes: renumber(s.scenes.filter((_, k) => k !== i)) }))
+
+  // Per-scene ComfyUI workflow export: hand-tweak any shot in the GUI.
+  const exportWorkflow = async () => {
+    try {
+      const scene = script.scenes[sel]
+      const target = mesh?.cloud ? 'cloud' : 'local'
+      const wf = await mesh.exportWorkflow({
+        prompt: meshPromptForScene(scene, script),
+        length: scene.frames || 201,
+        width: 960, height: 544, strength: 1.0, target,
+      })
+      const blob = new Blob([JSON.stringify(wf.workflow, null, 2)], { type: 'application/json' })
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(blob)
+      a.download = `scene_${scene.sceneNumber}_workflow.json`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+    } catch (e) {
+      alert(`Workflow export failed: ${e.message}`)
+    }
+  }
 
   const updateScene = (idx, patch) => {
     setScript((s) => {
@@ -70,9 +122,14 @@ export default function ReviewStage({
           <button
             key={i}
             className="amvd-frame"
+            draggable
+            onDragStart={onDragStartScene(i)}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={onDropScene(i)}
             onClick={() => setSel(i)}
+            title="Drag to reorder · click to edit"
             style={{
-              flex: '0 0 118px', height: 70, borderRadius: 8, cursor: 'pointer',
+              flex: '0 0 118px', height: 70, borderRadius: 8, cursor: 'grab',
               background: `linear-gradient(160deg, ${palette[i % Math.max(1, palette.length)]?.hex || '#223'} 0%, var(--panel-raised) 130%)`,
               border: `2px solid ${sel === i ? 'var(--gold)' : 'var(--hairline)'}`,
               color: 'var(--text)', fontFamily: 'var(--font-mono)', fontSize: 10,
@@ -108,6 +165,9 @@ export default function ReviewStage({
                 title="Regenerate this scene as an alternate take, aware of the scenes before and after it"
                 style={{ alignSelf: 'flex-end' }}
               ><RefreshCw size={13} /> Reshoot</button>
+              <button onClick={() => duplicateScene(sel)} className="amvd-btn-ghost" title="Duplicate this scene"><Copy size={13} /></button>
+              <button onClick={() => deleteScene(sel)} disabled={script.scenes.length <= 1} className="amvd-btn-ghost" title="Delete this scene"><Trash2 size={13} /></button>
+              <button onClick={exportWorkflow} className="amvd-btn-ghost" title="Build this scene's ComfyUI graph and download it — tweak it by hand in ComfyUI"><Workflow size={13} /> Export .json</button>
             </div>
           </div>
           <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>

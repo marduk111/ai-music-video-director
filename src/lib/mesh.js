@@ -38,16 +38,9 @@ function b64(file) {
   })
 }
 
-/**
- * Queue one generation through the mesh.
- * @param {object} opts - prompt, negative?, length (frames), width, height,
- *   strength (denoise for i2i / motion for i2v), target ('cloud'|'local'),
- *   model, lora, loraStrength, pose, poseStrength,
- *   startFile (File|Blob) and/or endFile (File|Blob) for start/end conditioning.
- * @returns {{job, kind, model, note}}
- */
-export async function generate(opts) {
-  const body = {
+/** Shared payload builder for generate / dry-run export. */
+function genBody(opts) {
+  return {
     prompt: opts.prompt,
     negative: opts.negative,
     length: opts.length,
@@ -61,6 +54,18 @@ export async function generate(opts) {
     pose: opts.pose,
     pose_strength: opts.poseStrength,
   }
+}
+
+/**
+ * Queue one generation through the mesh.
+ * @param {object} opts - prompt, negative?, length (frames), width, height,
+ *   strength (denoise for i2i / motion for i2v), target ('cloud'|'local'),
+ *   model, lora, loraStrength, pose, poseStrength,
+ *   startFile (File|Blob) and/or endFile (File|Blob) for start/end conditioning.
+ * @returns {{job, kind, model, note}}
+ */
+export async function generate(opts) {
+  const body = genBody(opts)
   if (opts.startFile) {
     body.image_b64 = await b64(opts.startFile)
     body.filename = opts.filename || 'start_frame.png'
@@ -69,6 +74,22 @@ export async function generate(opts) {
     body.end_image_b64 = await b64(opts.endFile)
     body.end_filename = opts.endFilename || 'end_frame.png'
   }
+  const res = await fetch(`${STUDIO}/api/generate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  const data = await res.json()
+  if (data.error) throw new Error(data.error)
+  return data
+}
+
+/**
+ * Build (but don't queue) the ComfyUI workflow for one scene — download it
+ * and tweak that shot by hand in the ComfyUI GUI. Returns {workflow, model, kind, note}.
+ */
+export async function exportWorkflow(opts) {
+  const body = { ...genBody(opts), dry_run: true }
   const res = await fetch(`${STUDIO}/api/generate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

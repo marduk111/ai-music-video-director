@@ -109,6 +109,40 @@ export function zeroCrossingRate(buffer) {
   return crossings / limit
 }
 
+/**
+ * Onset (transient) detection from the RMS envelope: half-wave rectified
+ * flux peaks. These are the strongest musical hits — the moments a cut
+ * should land on.
+ */
+export function detectOnsets(env, sampleRate = 10, maxOnsets = 240) {
+  const flux = new Float32Array(env.length)
+  for (let i = 1; i < env.length; i++) flux[i] = Math.max(0, env[i] - env[i - 1])
+  // light 3-tap smoothing
+  const sm = new Float32Array(env.length)
+  for (let i = 0; i < env.length; i++) {
+    sm[i] = (flux[Math.max(0, i - 1)] + flux[i] * 2 + flux[Math.min(env.length - 1, i + 1)]) / 4
+  }
+  let peak = 0
+  for (let i = 0; i < sm.length; i++) peak = Math.max(peak, sm[i])
+  const thr = peak * 0.12
+  const peaks = []
+  for (let i = 1; i < sm.length - 1; i++) {
+    if (sm[i] > sm[i - 1] && sm[i] >= sm[i + 1] && sm[i] > thr) {
+      peaks.push({ t: i / sampleRate, s: sm[i] })
+    }
+  }
+  // enforce ~100ms spacing, keep the strongest ones
+  const kept = []
+  for (const p of peaks.sort((a, b) => a.t - b.t)) {
+    if (!kept.length || p.t - kept[kept.length - 1].t >= 0.1) kept.push(p)
+  }
+  return kept
+    .sort((a, b) => b.s - a.s)
+    .slice(0, maxOnsets)
+    .map((p) => p.t)
+    .sort((a, b) => a - b)
+}
+
 export async function analyzeAudioFile(file, onProgress = () => {}) {
   onProgress('Decoding audio...')
   const ctx = getCtx()
@@ -127,6 +161,8 @@ export async function analyzeAudioFile(file, onProgress = () => {}) {
   onProgress('Estimating tempo...')
   const bpm = estimateBpm(mono)
   const zcr = zeroCrossingRate(buffer)
+  onProgress('Finding transients...')
+  const onsets = detectOnsets(mono)
 
   const normMono = normalize(mono)
   const energyBuckets = resampleToBuckets(normMono)
@@ -145,6 +181,7 @@ export async function analyzeAudioFile(file, onProgress = () => {}) {
     channels: buffer.numberOfChannels,
     bpm,
     zcr,
+    onsets,
     energyBuckets,
     bass,
     mid,
@@ -180,13 +217,33 @@ export function framesForDuration(seconds) {
   return 8 * n + 1
 }
 
+// Place a cut exactly ON a transient when one sits near the bar line.
+function snapToOnset(t, onsets, tolerance) {
+  if (!onsets?.length) return t
+  let best = null
+  let bestD = tolerance
+  for (const o of onsets) {
+    if (o > t + tolerance) break
+    const d = Math.abs(o - t)
+    if (d <= bestD) {
+      bestD = d
+      best = o
+    }
+  }
+  return best ?? t
+}
+
 /**
  * Walk the song and cut scenes on bar lines with energy-adaptive lengths.
+ * Interior cuts snap to the nearest detected transient (onset) within a
+ * quarter-bar, so edits land ON musical hits, not just near the grid.
  * @returns {Array<{start, end, bars, intensity}>} boundaries aligned to bars;
  *          the final scene absorbs any tail shorter than its own bar budget.
  */
 export function beatSyncedBoundaries(audio, totalSeconds, { minBars = 2, maxBars = 5 } = {}) {
   const bar = barSeconds(audio?.bpm)
+  const tol = Math.min(0.6, bar * 0.3)
+  const snap = (t) => snapToOnset(t, audio?.onsets, tol)
   const out = []
   let start = 0
   while (start < totalSeconds - 0.01) {
@@ -204,8 +261,11 @@ export function beatSyncedBoundaries(audio, totalSeconds, { minBars = 2, maxBars
       out.push({ start, end: totalSeconds, bars: Math.max(1, Math.round(remaining / bar)), intensity })
       break
     }
-    out.push({ start, end: start + bars * bar, bars, intensity })
-    start += bars * bar
+    // the cut itself: bar line, nudged onto a musical hit
+    let end = snap(start + bars * bar)
+    end = Math.max(start + minBars * bar * 0.75, Math.min(end, totalSeconds - minBars * bar * 0.5))
+    out.push({ start, end, bars, intensity })
+    start = end
   }
   if (!out.length) out.push({ start: 0, end: totalSeconds, bars: maxBars, intensity: 0.5 })
   return out

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Music, FileUp, Wand2, Loader2 } from 'lucide-react'
+import { Music, FileUp, Wand2, Loader2, Mic } from 'lucide-react'
 import { analyzeAudioFile } from './lib/audioAnalysis.js'
 import { generateScriptWithEngine } from './lib/directorEngine.js'
 import { VISUAL_STYLES } from './lib/constants.js'
@@ -12,6 +12,8 @@ export default function InputStage({ mesh, onScript, onImport }) {
   const [duration, setDuration] = useState(90) // fallback if no song uploaded
   const [busy, setBusy] = useState(false)
   const [models, setModels] = useState(null)
+  const [transcribing, setTranscribing] = useState(false)
+  const [transcribeMsg, setTranscribeMsg] = useState('')
   const songRef = useRef(null)
   const scriptRef = useRef(null)
 
@@ -26,6 +28,37 @@ export default function InputStage({ mesh, onScript, onImport }) {
     } catch (e) {
       setAnalyzing('')
       alert(`Could not analyze that audio file: ${e.message}`)
+    }
+  }
+
+  // Whisper lyric auto-transcription (the original app's killer feature).
+  // The transcription sidecar streams the job; big songs take minutes.
+  const transcribe = async () => {
+    const file = songRef.current?.files?.[0]
+    if (!file || transcribing) return
+    try {
+      setTranscribing(true)
+      setTranscribeMsg('Uploading to Whisper…')
+      const fd = new FormData()
+      fd.append('file', file)
+      const r = await fetch('/amvd/api/transcribe', { method: 'POST', body: fd })
+      const j = await r.json()
+      if (j.error) throw new Error(j.error)
+      for (;;) {
+        await new Promise((res) => setTimeout(res, 2500))
+        const st = await (await fetch(`/amvd/api/transcribe/status/${j.job}`)).json()
+        setTranscribeMsg(st.status === 'working' ? 'Whisper is listening to the vocals…' : '')
+        if (st.status === 'done') {
+          setLyrics(st.text)
+          setTranscribeMsg('')
+          break
+        }
+        if (st.status === 'error') throw new Error(st.error)
+      }
+    } catch (e) {
+      setTranscribeMsg(`Transcription failed: ${e.message}`)
+    } finally {
+      setTranscribing(false)
     }
   }
 
@@ -61,6 +94,15 @@ export default function InputStage({ mesh, onScript, onImport }) {
             <span style={{ color: 'var(--gold)' }}>{audio.bpm} BPM</span>
             <span>{Math.floor(audio.duration / 60)}:{String(Math.round(audio.duration % 60)).padStart(2, '0')} long</span>
             <span style={{ color: 'var(--teal)' }}>bar-synced scenes — cuts land on the beat</span>
+          </div>
+        )}
+        {audio && (
+          <div style={{ marginTop: 10, display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+            <button onClick={transcribe} disabled={transcribing} className="amvd-btn-ghost">
+              {transcribing ? <Loader2 size={13} style={{ animation: 'spin 1s linear infinite' }} /> : <Mic size={13} color="var(--teal)" />}
+              {transcribing ? 'Transcribing…' : 'Transcribe lyrics (Whisper)'}
+            </button>
+            {transcribeMsg && <span style={{ fontSize: 12, color: 'var(--text-dim)' }}>{transcribeMsg}</span>}
           </div>
         )}
         {!audio && (

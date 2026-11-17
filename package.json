@@ -9,11 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@huggingface/transformers": "^4.3.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
+    "express": "^4.22.3",
     "express-rate-limit": "^8.6.2",
     "lucide-react": "^0.474.0",
+    "multer": "^2.5.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
