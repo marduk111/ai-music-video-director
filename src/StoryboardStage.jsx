@@ -35,7 +35,17 @@ export default function StoryboardStage({ script, mesh: meshStatus, board, setBo
 
   useEffect(() => {
     if (!models?.length) return
-    setKeyModel((m) => m || pick(models, /realistic_vision/i) || pick(models, /realvis/i) || models[0])
+    // Best still engine available on this target: FLUX.1-schnell (12B, 4-step)
+    // > RealVisXL (SDXL) > Realistic Vision (SD1.5). The cloud T4 runs FLUX;
+    // the local 3050 falls back down the list. Never fall back to an LTXV
+    // (video) checkpoint for a still.
+    setKeyModel((m) => m
+      || pick(models, /flux/i)
+      || pick(models, /realvis/i)
+      || pick(models, /realistic_vision/i)
+      || pick(models, /dreamshaper/i)
+      || models.find((x) => !/ltxv/i.test(x))
+      || models[0])
   }, [models])
 
   // ---- board init / patching ----

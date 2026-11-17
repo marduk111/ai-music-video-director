@@ -39,7 +39,15 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
       || pick(models, /ltxv.*distilled/i)
       || pick(models, /ltxv/i)
       || models[0])
-    setKeyModel((m) => m || pick(models, /realistic_vision/i) || pick(models, /realvis/i) || pick(models, /dreamshaper/i) || models[0])
+    // Best still engine available on this target: FLUX.1-schnell > RealVisXL
+    // (SDXL) > Realistic Vision (SD1.5) — same ladder as the storyboard.
+    setKeyModel((m) => m
+      || pick(models, /flux/i)
+      || pick(models, /realvis/i)
+      || pick(models, /realistic_vision/i)
+      || pick(models, /dreamshaper/i)
+      || models.find((x) => !/ltxv/i.test(x))
+      || models[0])
   }, [models])
 
   const effectiveTarget = resolvedTarget
