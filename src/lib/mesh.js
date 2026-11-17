@@ -30,6 +30,8 @@ export async function listLoras(target) {
 }
 
 function b64(file) {
+  // Accepts File/Blob — or an existing dataURL string (character photo refs).
+  if (typeof file === 'string' && file.startsWith('data:')) return Promise.resolve(file)
   return new Promise((resolve, reject) => {
     const r = new FileReader()
     r.onload = () => resolve(r.result)
@@ -61,7 +63,9 @@ function genBody(opts) {
  * @param {object} opts - prompt, negative?, length (frames), width, height,
  *   strength (denoise for i2i / motion for i2v), target ('cloud'|'local'),
  *   model, lora, loraStrength, pose, poseStrength,
- *   startFile (File|Blob) and/or endFile (File|Blob) for start/end conditioning.
+ *   startFile (File|Blob|dataURL) and/or endFile (File|Blob|dataURL) for
+ *   start/end conditioning; refFile (File|Blob|dataURL) pins a character
+ *   reference mid-shot (LTXVAddGuide) for identity consistency.
  * @returns {{job, kind, model, note}}
  */
 export async function generate(opts) {
@@ -73,6 +77,10 @@ export async function generate(opts) {
   if (opts.endFile) {
     body.end_image_b64 = await b64(opts.endFile)
     body.end_filename = opts.endFilename || 'end_frame.png'
+  }
+  if (opts.refFile) {
+    body.ref_image_b64 = await b64(opts.refFile)
+    body.ref_filename = opts.refFilename || 'character_ref.png'
   }
   const res = await fetch(`${STUDIO}/api/generate`, {
     method: 'POST',

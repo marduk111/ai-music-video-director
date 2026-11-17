@@ -4,7 +4,7 @@ import {
   AlertTriangle, CheckCircle2, Wand2, Video,
 } from 'lucide-react'
 import * as mesh from './lib/mesh.js'
-import { meshPromptForScene } from './lib/scriptIO.js'
+import { meshPromptForScene, characterPhotoForScene } from './lib/scriptIO.js'
 
 const W = 960
 const H = 544
@@ -41,12 +41,20 @@ export default function StoryboardStage({ script, mesh: meshStatus, board, setBo
   // ---- board init / patching ----
   const initBoard = () => {
     const mk = (prompt) => ({ blob: null, url: null, status: 'empty', prompt, note: '' })
+    const basePrompt = (sc) => meshPromptForScene(sc, script, { forVideo: false })
     setBoard({
-      keyframe: mk(`${meshPromptForScene(script.scenes[0], script, { forVideo: false })}, deep cinematic shadows, 35mm film lens, hyper-detailed, single character portrait, centered`),
-      starts: script.scenes.map((sc) => mk(meshPromptForScene(sc, script, { forVideo: false }))),
-      ends: script.scenes.map((sc) => mk(
-        `${meshPromptForScene(sc, script, { forVideo: false })}${sc.transition ? `, ${sc.transition.toLowerCase()}` : ', end of the shot, motion resolving'}`,
-      )),
+      keyframe: mk(`${basePrompt(script.scenes[0])}, deep cinematic shadows, 35mm film lens, hyper-detailed, single character portrait, centered`),
+      starts: script.scenes.map((sc) => mk(basePrompt(sc))),
+      // END frame = the state AFTER the cut: build it from the NEXT scene's
+      // content (what the cut lands on) — otherwise every end frame came out
+      // as a near-copy of its start frame. Last scene resolves to stillness.
+      ends: script.scenes.map((sc, i) => {
+        const next = script.scenes[i + 1]
+        const cut = sc.transition ? `, ${sc.transition.toLowerCase()}` : ', the cut lands'
+        return mk(next
+          ? `${basePrompt(next)}, final beat of shot ${sc.sceneNumber}${cut}`
+          : `${basePrompt(sc)}, final image of the song, motion resolving to stillness`)
+      }),
     })
   }
   useEffect(() => { if (!board) initBoard(); /* eslint-disable-line */ }, [])
@@ -60,6 +68,11 @@ export default function StoryboardStage({ script, mesh: meshStatus, board, setBo
   const setKeyPrompt = (prompt) => patchKey({ prompt })
 
   // ---- generation ----
+  // Photo reference: the character photo (if the user uploaded one) becomes
+  // the seed for stills — identity comes from the photo, the prompt places
+  // the shot. Video renders additionally pin it mid-shot (LTXVAddGuide).
+  const scenePhoto = (sc) => characterPhotoForScene(sc, script)
+
   const runSlot = async (list, i, { source, strength, prompt }) => {
     const setter = list === 'keyframe' ? patchKey : (f) => patchSlot(list, i, f)
     setter({ status: 'busy', note: `i2i ${Math.round(strength * 100)}% on ${target === 'cloud' ? 'T4' : '3050'}…` })
@@ -78,17 +91,30 @@ export default function StoryboardStage({ script, mesh: meshStatus, board, setBo
     }
   }
 
-  const genKeyframe = () => runSlot('keyframe', 0, { strength: 1.0, prompt: board.keyframe.prompt })
+  const genKeyframe = () => {
+    const photo = scenePhoto(script.scenes[0])
+    if (photo) {
+      // Photo reference seed: 0.78 denoise keeps the person's identity while
+      // the prompt dresses the scene around them.
+      return runSlot('keyframe', 0, { source: photo, strength: 0.78, prompt: board.keyframe.prompt })
+    }
+    return runSlot('keyframe', 0, { strength: 1.0, prompt: board.keyframe.prompt })
+  }
   const genStart = (i) => {
     // scene 1's start frame IS the keyframe by default; regenerate makes a variant
     const src = i === 0 ? null : board.keyframe?.blob
     if (i > 0 && !src) { patchSlot('starts', i, { status: 'error', note: 'generate the character keyframe first' }); return }
-    runSlot('starts', i, { source: src, strength: i === 0 ? 1.0 : 0.62, prompt: board.starts[i].prompt })
+    // 0.7 denoise: enough authority for the scene's own content, enough
+    // restraint to keep the keyframe's cast/look (below ~0.6 the scene prompt
+    // barely registers; the old 0.62 left every shot looking like the keyframe).
+    runSlot('starts', i, { source: src, strength: i === 0 ? 1.0 : 0.7, prompt: board.starts[i].prompt })
   }
   const genEnd = (i) => {
     const src = board.starts?.[i]?.blob
     if (!src) { patchSlot('ends', i, { status: 'error', note: 'generate this scene\u2019s start frame first' }); return }
-    runSlot('ends', i, { source: src, strength: 0.5, prompt: board.ends[i].prompt })
+    // 0.72 denoise + a next-scene prompt: the end frame must SHOW the cut
+    // landing, not re-print the start frame (the old 0.5 + same prompt did).
+    runSlot('ends', i, { source: src, strength: 0.72, prompt: board.ends[i].prompt })
   }
 
   // scene 1's start frame defaults to the approved keyframe

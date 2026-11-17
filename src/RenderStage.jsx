@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { ArrowLeft, Film, KeyRound, Link2, Scissors, Loader2, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import * as mesh from './lib/mesh.js'
-import { meshPromptForScene } from './lib/scriptIO.js'
+import { meshPromptForScene, characterPhotoForScene } from './lib/scriptIO.js'
 
 export default function RenderStage({ script, audio, songFile, mesh: meshStatus, board, onBack }) {
   const [target, setTarget] = useState('auto') // auto | cloud | local
@@ -48,23 +48,25 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
   /**
    * Generate the canonical keyframe (character + relic + palette) via i2i:
    * Realistic Vision + detail LoRA on a neutral studio frame. If the user
-   * uploaded one, we skip straight to that. The studio's generate endpoint
-   * always needs a start image, so we feed a neutral canvas at strength 1.0 —
-   * full denoise makes the source pixels irrelevant (effectively txt2img).
+   * uploaded one, we skip straight to that. When a character photo reference
+   * exists, it SEEDS the keyframe at 0.78 denoise — identity from the photo,
+   * composition from the prompt. Otherwise neutral canvas at strength 1.0
+   * (full denoise makes the source pixels irrelevant — effectively txt2img).
    */
   const makeKeyframe = async (note) => {
     if (keyframeFile) return keyframeFile
     const scene0 = script.scenes[0]
     const prompt = `${meshPromptForScene(scene0, script, { forVideo: false })}, deep cinematic shadows, 35mm film lens, cinematic lighting, hyper-detailed, single character portrait, centered`
+    const photo = characterPhotoForScene(scene0, script)
     const res = await mesh.generate({
       prompt,
       length: 1, width: shape.width, height: shape.height,
-      strength: 1.0, target: effectiveTarget,
+      strength: photo ? 0.78 : 1.0, target: effectiveTarget,
       model: keyModel, lora: lora || undefined, loraStrength: 0.8,
-      startFile: await neutralFrame(shape.width, shape.height),
+      startFile: photo || await neutralFrame(shape.width, shape.height),
       filename: 'keyframe_seed.png',
     })
-    note(`keyframe queued (${keyModel}${lora ? ` + ${lora}` : ''})…`)
+    note(`keyframe queued (${keyModel}${photo ? ', from photo ref' : ''}${lora ? ` + ${lora}` : ''})…`)
     const info = await mesh.pollJob(res.job, effectiveTarget)
     const blob = await mesh.fetchResult(res.job, effectiveTarget)
     return blob
@@ -117,8 +119,12 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
           startFile: startFrame,
           // storyboard end frame (approved) > user closing frame > none
           endFile: board?.ends?.[i]?.blob || (isLast ? endFrameFile : undefined),
+          // character photo reference — pinned mid-shot (LTXVAddGuide) so the
+          // identity re-asserts itself halfway through long takes
+          refFile: characterPhotoForScene(scene, script) || undefined,
           filename: `scene_${scene.sceneNumber}_start.png`,
-          endFilename: `closing_frame.png`,
+          endFilename: 'closing_frame.png',
+          refFilename: 'character_ref.png',
         })
         note(i, { job: res.job, note: res.note || '' })
         const info = await mesh.pollJob(res.job, effectiveTarget, {

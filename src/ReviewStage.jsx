@@ -202,25 +202,60 @@ function ConsistencyEditor({ elements, onChange }) {
     const props = elements.props.map((p, j) => (j === i ? { ...p, ...patch } : p))
     onChange({ props })
   }
+  // Photo reference per character/prop: stored inline as a dataURL, seeded
+  // into the keyframe and pinned mid-shot on every video render.
+  const setPhoto = (kind, i, file) => {
+    if (!file) return
+    const r = new FileReader()
+    r.onload = () => (kind === 'c' ? setCharacters(i, { photo: r.result }) : setProps(i, { photo: r.result }))
+    r.readAsDataURL(file)
+  }
+  const clearPhoto = (kind, i) => (kind === 'c' ? setCharacters(i, { photo: null }) : setProps(i, { photo: null }))
+  const photoRef = React.useRef({})
   return (
     <div style={{ background: 'var(--panel)', border: '1px solid var(--hairline)', borderRadius: 12, padding: 18 }}>
       <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, letterSpacing: 1, margin: '0 0 10px', color: 'var(--gold)' }}>
-        CONSISTENT ELEMENTS <span style={{ color: 'var(--text-dim)', fontSize: 12, fontFamily: 'var(--font-mono)', letterSpacing: 0 }}>— injected into every scene prompt</span>
+        CONSISTENT ELEMENTS <span style={{ color: 'var(--text-dim)', fontSize: 12, fontFamily: 'var(--font-mono)', letterSpacing: 0 }}>— injected into every scene prompt · photo refs seed the keyframe &amp; pin identity mid-shot</span>
       </h3>
-      {[...elements.characters.map((c, i) => ({ kind: 'c', item: c, i })), ...elements.props.map((p, i) => ({ kind: 'p', item: p, i }))].map(({ kind, item, i }) => (
-        <div key={`${kind}${i}`} style={{ display: 'grid', gridTemplateColumns: '170px 1fr', gap: 10, marginBottom: 8 }}>
-          <input
-            value={item.name}
-            onChange={(e) => (kind === 'c' ? setCharacters(i, { name: e.target.value }) : setProps(i, { name: e.target.value }))}
-            style={{ background: 'var(--panel-raised)', border: '1px solid var(--hairline)', borderRadius: 6, color: 'var(--gold)', padding: '8px 10px', fontFamily: 'var(--font-mono)', fontSize: 13 }}
-          />
-          <input
-            value={item.description}
-            onChange={(e) => (kind === 'c' ? setCharacters(i, { description: e.target.value }) : setProps(i, { description: e.target.value }))}
-            style={{ background: 'var(--panel-raised)', border: '1px solid var(--hairline)', borderRadius: 6, color: 'var(--text)', padding: '8px 10px' }}
-          />
-        </div>
-      ))}
+      {[...elements.characters.map((c, i) => ({ kind: 'c', item: c, i })), ...elements.props.map((p, i) => ({ kind: 'p', item: p, i }))].map(({ kind, item, i }) => {
+        const key = `${kind}${i}`
+        return (
+          <div key={key} style={{ display: 'grid', gridTemplateColumns: '170px 1fr 58px', gap: 10, marginBottom: 8, alignItems: 'center' }}>
+            <input
+              value={item.name}
+              onChange={(e) => (kind === 'c' ? setCharacters(i, { name: e.target.value }) : setProps(i, { name: e.target.value }))}
+              style={{ background: 'var(--panel-raised)', border: '1px solid var(--hairline)', borderRadius: 6, color: 'var(--gold)', padding: '8px 10px', fontFamily: 'var(--font-mono)', fontSize: 13 }}
+            />
+            <input
+              value={item.description}
+              onChange={(e) => (kind === 'c' ? setCharacters(i, { description: e.target.value }) : setProps(i, { description: e.target.value }))}
+              style={{ background: 'var(--panel-raised)', border: '1px solid var(--hairline)', borderRadius: 6, color: 'var(--text)', padding: '8px 10px' }}
+            />
+            <div style={{ display: 'grid', justifyItems: 'center', gap: 2 }}>
+              <input
+                ref={(el) => { photoRef.current[key] = el }}
+                type="file" accept="image/*" style={{ display: 'none' }}
+                onChange={(e) => { setPhoto(kind, i, e.target.files[0]); e.target.value = '' }}
+              />
+              <button
+                onClick={() => photoRef.current[key]?.click()}
+                title={item.photo ? 'Replace photo reference' : 'Upload photo reference — seeds the keyframe and pins identity in every shot'}
+                style={{ width: 52, height: 52, borderRadius: 8, border: `1px solid ${item.photo ? 'var(--teal)' : 'var(--hairline)'}`, background: 'var(--panel-raised)', cursor: 'pointer', padding: 0, overflow: 'hidden', display: 'grid', placeItems: 'center' }}
+              >
+                {item.photo
+                  ? <img src={item.photo} alt="ref" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  : <span style={{ fontSize: 18, color: 'var(--text-dim)' }}>+</span>}
+              </button>
+              {item.photo && (
+                <button onClick={() => clearPhoto(kind, i)} title="Remove photo reference"
+                  style={{ background: 'none', border: 0, color: 'var(--text-dim)', cursor: 'pointer', fontSize: 10, fontFamily: 'var(--font-mono)', padding: 0 }}>
+                  remove
+                </button>
+              )}
+            </div>
+          </div>
+        )
+      })}
     </div>
   )
 }

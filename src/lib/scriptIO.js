@@ -243,12 +243,15 @@ export function meshPromptForScene(scene, script, { forVideo = true } = {}) {
     ? (scene.veoPrompt || scene.description || '').replace(/\s*8k render,?\s*/i, '')
     : scene.veoPrompt || scene.description || ''
   // @-mention character consistency (from the VEO AI Studio app): writing
-  // @Name in a scene prompt injects that character's full definition.
+  // @Name in a scene prompt injects that character's full definition — and
+  // when that character has a photo reference, the video model gets it pinned
+  // as an identity guide, so say so in the text too.
   if (ce?.characters?.length) {
     for (const c of ce.characters) {
       if (!c.name) continue
+      const refNote = c.photo ? ', as in the attached reference image' : ''
       const re = new RegExp(`@${c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi')
-      body = body.replace(re, `(the character '${c.name}' defined as: ${c.description})`)
+      body = body.replace(re, `(the character '${c.name}' defined as: ${c.description}${refNote})`)
     }
   }
   parts.push(body)
@@ -262,4 +265,22 @@ export function meshPromptForScene(scene, script, { forVideo = true } = {}) {
     if (styles.length) parts.push(styles.join(', '))
   }
   return parts.filter(Boolean).join(', ')
+}
+
+/**
+ * The photo reference a scene should render with: the first character whose
+ * @-mention (or plain name) appears in the scene's prompt and has a photo,
+ * else the first photographed character. Returns the dataURL or null.
+ */
+export function characterPhotoForScene(scene, script) {
+  const ce = script?.consistentElements
+  const chars = (ce?.characters || []).filter((c) => c.photo)
+  if (!chars.length) return null
+  const text = `${scene?.veoPrompt || ''} ${scene?.description || ''}`
+  for (const c of chars) {
+    if (c.name && new RegExp(`@?${c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(text)) {
+      return c.photo
+    }
+  }
+  return chars[0].photo
 }
