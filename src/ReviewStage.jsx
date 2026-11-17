@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
-import { FileDown, FileUp, ArrowLeft, Video, Loader2 } from 'lucide-react'
+import { FileDown, FileUp, ArrowLeft, Video, Loader2, RefreshCw } from 'lucide-react'
 import { serializeScriptText } from './lib/scriptIO.js'
+import { reshootScene } from './lib/directorEngine.js'
 import { CAMERA_ANGLES, TRANSITIONS } from './lib/constants.js'
 
 export default function ReviewStage({
@@ -101,6 +102,12 @@ export default function ReviewStage({
                 onChange={(v) => updateScene(sel, { transition: v || null })}
                 label="Transition"
               />
+              <button
+                onClick={() => setScript(reshootScene(script, sel))}
+                className="amvd-btn-ghost"
+                title="Regenerate this scene as an alternate take, aware of the scenes before and after it"
+                style={{ alignSelf: 'flex-end' }}
+              ><RefreshCw size={13} /> Reshoot</button>
             </div>
           </div>
           <label style={{ fontSize: 12, color: 'var(--text-dim)' }}>

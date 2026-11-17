@@ -167,7 +167,8 @@ export function averageEnergy(audio, startSec, endSec) {
 // ---------- Beat-synced scene timing (the mesh/LTXV plan) ----------
 // LTXV generates any 8n+1 frame count at 25fps, so instead of VEO's fixed
 // 8-second blocks, scene boundaries land on musical bars and each shot's
-// length breathes with the song's energy: 2 bars on peaks, 8 in calm.
+// length breathes with the song's energy: 2 bars on peaks, 5 in calm
+// (short shots also fight LTXV's face-drift on long takes).
 export function barSeconds(bpm) {
   if (!bpm || bpm < 40) return 2 // fallback: 120 BPM bar
   return (60 / bpm) * 4
@@ -184,7 +185,7 @@ export function framesForDuration(seconds) {
  * @returns {Array<{start, end, bars, intensity}>} boundaries aligned to bars;
  *          the final scene absorbs any tail shorter than its own bar budget.
  */
-export function beatSyncedBoundaries(audio, totalSeconds, { minBars = 2, maxBars = 8 } = {}) {
+export function beatSyncedBoundaries(audio, totalSeconds, { minBars = 2, maxBars = 5 } = {}) {
   const bar = barSeconds(audio?.bpm)
   const out = []
   let start = 0

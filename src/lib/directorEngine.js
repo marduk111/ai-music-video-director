@@ -123,6 +123,58 @@ function an(word) {
   return (/^[aeiou]/i.test(word) ? 'an' : 'a')
 }
 
+/**
+ * "Reshoot": regenerate ONE scene's text as an alternate take, aware of its
+ * neighbors (ported from the original app's reshoot prompt) — the new text
+ * must bridge what came before and what comes after.
+ */
+export function reshootScene(script, idx) {
+  const scenes = script.scenes
+  const sc = scenes[idx]
+  if (!sc) return script
+  const prev = scenes[idx - 1]
+  const next = scenes[idx + 1]
+  const ce = script.consistentElements
+  const character = ce?.characters?.[0]?.name || 'the artist'
+  const props = (ce?.props || []).map((p) => p.name).join(' and ')
+  const aesthetic = STYLE_AESTHETICS[style_of(script)] || STYLE_AESTHETICS.Cinematic
+
+  const sungLines = (sc.correspondingLyrics || [])
+    .map((l) => l.text)
+    .filter((t) => t && t !== 'Instrumental flow')
+  const imagery = imageryForLines(sungLines)
+  const before = prev ? (prev.correspondingLyrics?.[0]?.text || prev.cameraAngle) : 'the opening'
+  const after = next ? (next.correspondingLyrics?.[0]?.text || next.cameraAngle) : 'the finale'
+
+  // a fresh angle, different from both neighbors
+  const used = new Set([prev?.cameraAngle, next?.cameraAngle, sc.cameraAngle])
+  const pool = CAMERA_ANGLES.filter((a) => !used.has(a))
+  let h = 0
+  for (const ch of (sc.veoPrompt || '') + sc.sceneNumber + Date.now()) h = (h * 31 + ch.charCodeAt(0)) >>> 0
+  const angle = pool.length ? pool[h % pool.length] : sc.cameraAngle
+  const intensity = sc._intensity ?? 0.5
+
+  const patch = { cameraAngle: angle }
+  if (imagery) {
+    patch.veoPrompt = `${angle} of ${character} ${actionVerb(intensity)} ${props}, ${imagery}, ${aesthetic}.`
+    patch.description = `Scene ${sc.sceneNumber} (alternate take): The line "${(sungLines[0] || '').slice(0, 61)}" now drives ${an(angle)} ${angle.toLowerCase()} — ${imagery}. Bridges "${before}" into "${after}".`
+  } else {
+    patch.veoPrompt = `${angle} of ${character} ${actionVerb(intensity)} ${props} in a cinematic environment, ${aesthetic}.`
+    patch.description = `Scene ${sc.sceneNumber} (alternate take): ${an(angle)} ${angle.toLowerCase()} that ${energyWord(intensity)}, bridging "${before}" into "${after}".`
+  }
+  return {
+    ...script,
+    scenes: scenes.map((s, i) => (i === idx ? { ...s, ...patch } : s)),
+  }
+}
+
+function style_of(script) {
+  // scripts remember their style via the analysis mood string ("Cinematic · …")
+  const m = String(script?.overallMood || '')
+  const key = m.split('·')[0].trim()
+  return STYLE_AESTHETICS[key] ? key : 'Cinematic'
+}
+
 
 function dynamicsDescription(buckets) {
   if (!buckets?.length) return 'Steady energy throughout.'

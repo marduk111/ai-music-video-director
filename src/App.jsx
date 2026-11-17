@@ -5,13 +5,15 @@ import { parseScriptText } from './lib/scriptIO.js'
 import './amvd.css'
 import InputStage from './InputStage.jsx'
 import ReviewStage from './ReviewStage.jsx'
+import StoryboardStage from './StoryboardStage.jsx'
 import RenderStage from './RenderStage.jsx'
 
 export default function App() {
-  const [stage, setStage] = useState('input') // input | review | render
+  const [stage, setStage] = useState('input') // input | review | storyboard | render
   const [script, setScript] = useState(null)
   const [audio, setAudio] = useState(null) // analysis object from audioAnalysis
   const [songFile, setSongFile] = useState(null)
+  const [board, setBoard] = useState(null) // storyboard frames (approved stills)
   const [mesh, setMesh] = useState(null)
   const [error, setError] = useState(null)
   const [importInfo, setImportInfo] = useState('')
@@ -48,6 +50,7 @@ export default function App() {
     setScript(nextScript)
     setAudio(nextAudio ?? null)
     setSongFile(nextSong ?? null)
+    setBoard(null) // a new script means a fresh storyboard
     setImportInfo(info || '')
     setStage('review')
   }, [])
@@ -101,6 +104,17 @@ export default function App() {
           importInfo={importInfo}
           mesh={mesh}
           onBack={() => setStage('input')}
+          onRender={() => setStage('storyboard')}
+        />
+      )}
+
+      {stage === 'storyboard' && script && (
+        <StoryboardStage
+          script={script}
+          mesh={mesh}
+          board={board}
+          setBoard={setBoard}
+          onBack={() => setStage('review')}
           onRender={() => setStage('render')}
         />
       )}
@@ -111,7 +125,8 @@ export default function App() {
           audio={audio}
           songFile={songFile}
           mesh={mesh}
-          onBack={() => setStage('review')}
+          board={board}
+          onBack={() => setStage('storyboard')}
         />
       )}
     </div>

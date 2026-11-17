@@ -239,10 +239,19 @@ export function serializeScriptText(script) {
 export function meshPromptForScene(scene, script, { forVideo = true } = {}) {
   const ce = script?.consistentElements
   const parts = []
-  const body = forVideo
+  let body = forVideo
     ? (scene.veoPrompt || scene.description || '').replace(/\s*8k render,?\s*/i, '')
     : scene.veoPrompt || scene.description || ''
-  parts.push(body.replace(new RegExp(`^${scene.cameraAngle || ''}\\s*of\\s*`, 'i'), (mm) => mm)) // keep camera language: LTXV reads it
+  // @-mention character consistency (from the VEO AI Studio app): writing
+  // @Name in a scene prompt injects that character's full definition.
+  if (ce?.characters?.length) {
+    for (const c of ce.characters) {
+      if (!c.name) continue
+      const re = new RegExp(`@${c.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi')
+      body = body.replace(re, `(the character '${c.name}' defined as: ${c.description})`)
+    }
+  }
+  parts.push(body)
   if (ce) {
     const names = [
       ...(ce.characters || []).map((c) => c.name),

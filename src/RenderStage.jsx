@@ -3,7 +3,7 @@ import { ArrowLeft, Film, KeyRound, Link2, Scissors, Loader2, AlertTriangle, Che
 import * as mesh from './lib/mesh.js'
 import { meshPromptForScene } from './lib/scriptIO.js'
 
-export default function RenderStage({ script, audio, songFile, mesh: meshStatus, onBack }) {
+export default function RenderStage({ script, audio, songFile, mesh: meshStatus, board, onBack }) {
   const [target, setTarget] = useState('auto') // auto | cloud | local
   const [videoModel, setVideoModel] = useState('') // '' = auto (LTXV distilled preferred)
   const [keyModel, setKeyModel] = useState('')     // i2i model for the keyframe
@@ -86,10 +86,18 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
         note(i, { status: 'keyframe' })
         let startFrame
         if (i === 0) {
-          startFrame = await makeKeyframe((m) => note(i, { note: m }))
-          setKeyframeUrl(URL.createObjectURL(startFrame))
+          // storyboard's approved keyframe wins; auto-generate only as fallback
+          if (board?.keyframe?.blob) {
+            startFrame = board.keyframe.blob
+            setKeyframeUrl(board.keyframe.url)
+            note(i, { note: 'using approved keyframe' })
+          } else {
+            startFrame = await makeKeyframe((m) => note(i, { note: m }))
+            setKeyframeUrl(URL.createObjectURL(startFrame))
+          }
         } else {
-          startFrame = chainFrame
+          startFrame = board?.starts?.[i]?.blob || chainFrame
+          if (board?.starts?.[i]?.blob) note(i, { note: 'using approved start frame' })
         }
         const isLast = i === script.scenes.length - 1
         const frames = scene.frames || 201 // per-scene LTXV length (8n+1)
@@ -101,7 +109,8 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
           strength: 1.0, target: effectiveTarget,
           model: videoModel, lora: lora || undefined, loraStrength: 0.8,
           startFile: startFrame,
-          endFile: isLast ? endFrameFile : undefined,
+          // storyboard end frame (approved) > user closing frame > none
+          endFile: board?.ends?.[i]?.blob || (isLast ? endFrameFile : undefined),
           filename: `scene_${scene.sceneNumber}_start.png`,
           endFilename: `closing_frame.png`,
         })
@@ -136,6 +145,17 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
   }
 
   const doneCount = jobs.filter((j) => j.status === 'done').length
+
+  // Blob downloads silently fail when the anchor isn't in the DOM —
+  // attach, click, remove.
+  const downloadFinal = () => {
+    const a = document.createElement('a')
+    a.href = finalVideo
+    a.download = `${(script.title || 'music-video').replace(/[^\w-]+/g, '_').toLowerCase()}_final.mp4`
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
 
   return (
     <div className="amvd-fadein" style={{ display: 'grid', gap: 16 }}>
@@ -242,10 +262,15 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
             <>
               <video src={finalVideo} controls style={{ width: '100%', maxWidth: 900, borderRadius: 10 }} />
               <div style={{ marginTop: 12 }}>
-                <a href={finalVideo} download={`${(script.title || 'music-video').replace(/[^\w-]+/g, '_').toLowerCase()}_final.mp4`}
-                   style={{ color: 'var(--teal)', fontFamily: 'var(--font-mono)', fontSize: 14 }}>
-                  ⬇ download final cut (song muxed in)
-                </a>
+                <button
+                  onClick={downloadFinal}
+                  style={{ background: 'none', border: '1px solid var(--hairline)', borderRadius: 8, padding: '8px 16px', cursor: 'pointer', color: 'var(--teal)', fontFamily: 'var(--font-mono)', fontSize: 14 }}
+                >
+                  ⬇ Download final cut (with the song)
+                </button>
+                <span style={{ marginLeft: 10, color: 'var(--text-dim)', fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+                  a copy is also saved in Desktop\AI Videos
+                </span>
               </div>
             </>
           )}
