@@ -32,7 +32,13 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
 
   useEffect(() => {
     if (!models?.length) return
-    setVideoModel((m) => m || pick(models, /ltxv.*distilled/i) || pick(models, /ltxv/i) || models[0])
+    // Cinematic default: the 13B distilled when the target has it (cloud T4),
+    // else the fastest distilled available (local 3050 runs the 2B).
+    setVideoModel((m) => m
+      || pick(models, /ltxv.*13b.*distilled/i)
+      || pick(models, /ltxv.*distilled/i)
+      || pick(models, /ltxv/i)
+      || models[0])
     setKeyModel((m) => m || pick(models, /realistic_vision/i) || pick(models, /realvis/i) || pick(models, /dreamshaper/i) || models[0])
   }, [models])
 
@@ -176,7 +182,7 @@ export default function RenderStage({ script, audio, songFile, mesh: meshStatus,
               <option value="local">Local RTX 3050</option>
             </select>
           </Field>
-          <Field label="Video model (LTXV)">
+          <Field label={`Video model (LTXV)${/13b/i.test(videoModel || '') ? ' — cinematic tier, scenes take ~3-4x longer' : ''}`}>
             <select value={videoModel} onChange={(e) => setVideoModel(e.target.value)} className="amvd-select">
               {(models || []).filter((m) => /ltxv/i.test(m)).map((m) => <option key={m} value={m}>{m}</option>)}
             </select>

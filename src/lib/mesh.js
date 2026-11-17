@@ -102,9 +102,11 @@ export async function exportWorkflow(opts) {
 
 /**
  * Poll a job until done/error. Returns {status, video_url, filename, kind}.
- * @param {number} timeoutMs default 20 min (an 8s 201-frame T4 render is ~2-4 min)
+ * @param {number} timeoutMs default 45 min — the 2B distilled does a 201-frame
+ *   scene in ~5.5 min on the T4, but the 13B cinematic tier runs ~3-4x slower
+ *   (fp8 upcast to fp16 on sm75), so a long 20s scene can take ~40 min.
  */
-export async function pollJob(job, target, { intervalMs = 3000, timeoutMs = 20 * 60000, onTick } = {}) {
+export async function pollJob(job, target, { intervalMs = 3000, timeoutMs = 45 * 60000, onTick } = {}) {
   const started = Date.now()
   for (;;) {
     const res = await fetch(`${STUDIO}/api/progress?job=${job}&target=${target}`)
